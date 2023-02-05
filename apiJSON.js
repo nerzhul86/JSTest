@@ -1,8 +1,34 @@
 // Use an API and check the headers and use GET
 // Check Network tab
-// Check JSON stringify and parse methods
+// Check JSON stringify method 
+// Stringify converts JS Object to JSON String
 
 
+
+//GET request
+
+
+async function getUsers(url, apiKey)
+{
+
+    let settings = {
+        method: "GET",
+        mode: "cors",
+        headers: {
+            'X-API-Key': apiKey 
+        }
+    }
+
+    let response = await fetch(url, settings);
+
+    let users = await response.json();
+
+    return users;
+} 
+
+
+
+/*
 let postURL = 'https://jsonplaceholder.typicode.com/posts';
 
 // for POST, we need body and settings
