@@ -2,33 +2,8 @@
 // Check Network tab
 // Check JSON stringify method 
 // Stringify converts JS Object to JSON String
+// Try response status
 
-
-
-//GET request
-
-
-async function getUsers(url, apiKey)
-{
-
-    let settings = {
-        method: "GET",
-        mode: "cors",
-        headers: {
-            'X-API-Key': apiKey 
-        }
-    }
-
-    let response = await fetch(url, settings);
-
-    let users = await response.json();
-
-    return users;
-} 
-
-
-
-/*
 let postURL = 'https://jsonplaceholder.typicode.com/posts';
 
 // for POST, we need body and settings
@@ -50,7 +25,10 @@ let settings = {
 
 fetch(postURL,settings)
 .then((result)=>{
-
+    
+    console.log("Response Status");
+    console.log(result.status);
+   
     return result.json();
 
 })
@@ -61,7 +39,7 @@ fetch(postURL,settings)
     console.log(error);
 })
 
-/*
+
 
 //GET operation
 
@@ -76,7 +54,9 @@ fetch(url)
     console.log(response.headers.get('Accept'));
     console.log(response.headers.get('X-HTTP-Method-Override'));
     console.log(response.headers.get('X-HTTP-Status-Code-Override'));
-
+    
+    console.log("Response Status");
+    console.log(response.status);
     
     return response.json();
 })
