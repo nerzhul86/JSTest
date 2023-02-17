@@ -4,6 +4,12 @@
 // Stringify converts JS Object to JSON String
 // Try response status
 
+
+
+
+
+/*
+
 let postURL = 'https://jsonplaceholder.typicode.com/posts';
 
 // for POST, we need body and settings
