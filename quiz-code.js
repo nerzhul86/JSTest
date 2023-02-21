@@ -1,20 +1,22 @@
-// Clicking on Answer will move Cursor to Next Section
-// Need to generate ID for each Section
-// On click, extract question number from clicked target Id and then increment it
-// That will be the next Id 
 
 /* To Do
 Collect Answer for each Question - When an Answer Block has been clicked - Done
-Disable other Answers if there is an Answer for Question
 Scroll to the topmost unanswered question  - Done
-Show Results when all Questions are answered
-Image also zooms in - See Anna's video on how to do this
-Answers are not centrally aligned 
-*/
 
-//Next Scarlett Question - Pick a Character Trait/Skill
-//Next Q - Pick a favorite co-star
-// Three Questions, Three possible Results - Need to plan out the results
+Show Results when all Questions are answered
+    a. Create Result block
+    b. Prepare Result data array - Need to add more choices and images
+    c. Program logic- Done
+
+
+Image also zooms in - Need to research this
+
+Disable other Answers if there is an Answer for Question - Done
+
+If another Answer is clicked, update selected Answer?
+Or provide Reset button?
+
+*/
 
 
 /** Variable Declarations **/
@@ -46,36 +48,6 @@ const quizData = [
                 id: "1.D",
                 text: "Dark Short",
                 img: "./Images/dark-short2.jpg",
-                credit: "Splash"
-            }
-        ]
-    },
-    {
-        id: "2",
-        question: "Pick a Character:",
-        answers: [
-            {
-                id: "2.A",
-                text: "Black Widow",
-                img: "./Images/black-widow.jpg",
-                credit: "Splash"
-            },
-            {
-                id: "2.B",
-                text: "Lucy",
-                img: "./Images/Lucy.jpg",
-                credit: "Splash"
-            },
-            {
-                id: "2.C",
-                text: "JOJO's Mom",
-                img: "./Images/Jojo.jpg",
-                credit: "Splash"
-            },
-            {
-                id: "2.D",
-                text: "Lost In Translation",
-                img: "./Images/LOT.jpg",
                 credit: "Splash"
             }
         ]
@@ -117,25 +89,25 @@ const quizData = [
             {
                 id: "4.A",
                 text: "Cutely Awkward Conversation",
-                img: "./Images/ChrisE1.jpg",
+                img: "./Images/",
                 credit: "Splash"
             },
             {
                 id: "4.B",
                 text: "Smug and Sexy",
-                img: "./Images/Samuel2.jfif",
+                img: "./Images/scarlett-johansson.gif",
                 credit: "Splash"
             },
             {
                 id: "4.C",
                 text: "Fend off Sexist Comments",
-                img: "./Images/ElizabethScarlett.jpg",
+                img: "./Images/Sexist.gif",
                 credit: "Splash"
             },
             {
                 id: "4.D",
                 text: "Democrat Badass",
-                img: "./Images/Paul2.jfif",
+                img: "./Images/DemocratBadass.jpg",
                 credit: "Splash"
             }
         ]
@@ -216,12 +188,9 @@ function populateQuiz(quizData)
 function extractDataFromAnswer(clickedAns)
 {
 
-    let choice = {};
+    let answerText;
 
     let questionId = clickedAns.slice(0,1);
-
-    choice.questionId = questionId;
-    choice.answerID = clickedAns; 
 
     let answerSet = quizData.find(q => q.id === questionId);
     
@@ -231,12 +200,12 @@ function extractDataFromAnswer(clickedAns)
     {
         if(answer.id === clickedAns)
         {
-          choice.answerTxt = answer.text;
+          answerText = answer.text;
           break;   
         }
     }
 
-    return choice;
+    return answerText;
 
 }//End of Function
 
@@ -254,13 +223,41 @@ function setQuestionAsAnswered(clickedAns)
 
     let answeredQuestion = document.getElementById(questionId);
 
-    console.log(answeredQuestion);
+//    console.log(answeredQuestion);
 
     answeredQuestion.classList.add("answered");
+
+    disbleOtherAnswers(answeredQuestion);
     
-    jumpToNextAnsweredQuestion();
+    return jumpToNextAnsweredQuestion();
       
 } //End of Function
+
+//Function that uses the parent Question to find all the unanswered answers and disable them
+
+function disbleOtherAnswers(answeredQuestion)
+{
+
+    console.log("Disabling all other Answers");
+    console.log("Parent Question");
+    console.log(answeredQuestion);
+
+    let answerB = answeredQuestion.nextSibling;
+
+    console.log("Its Answer Block");
+    console.log(answerB);
+
+    let answerList = answerB.querySelectorAll('.answer-block');
+
+    for(let answer of answerList)
+    {
+        if(!answer.classList.contains("answered-A"))
+        {
+            answer.classList.add("disabled");
+        }
+    }
+
+}//End of Function
 
 //Function that loops over all Questions, finds the next unanswered question and scrolls to that question
 
@@ -271,24 +268,75 @@ function jumpToNextAnsweredQuestion()
     for(let i=0; i<qElements.length; i++)
     {
         let Q = qElements[i];
-        console.log("Question being considered:");
-        console.log(Q);
+ //       console.log("Question being considered:");
+ //       console.log(Q);
 
-        console.log("Question has classes:");
-        console.log(Q.classList);
+ //       console.log("Question has classes:");
+ //       console.log(Q.classList);
 
         if(!Q.classList.contains('answered'))
         {
            console.log("Scrolling to question and exiting loop");
            Q.scrollIntoView();
-           return;
+           return 0;
         }
-
     }
 
     console.log("Exited For Loop. No Questions left unanswered.");
     console.log("Need to show Results.");
 
+    return 1;    
+
+} //End of Function
+
+//Function that creates Result block and displays Results
+
+function displayResults(choices)
+{
+
+    // User Choices are sorted alphabetically, so that even if User chooses in a random order, comparison with result set will work
+    console.log("Sorted List of Choices:");
+    console.log(choices.sort());
+
+    let character ="Old Hollywood Starlet";
+
+    let answerListString = JSON.stringify(choices);
+
+    let results = 
+    [
+        {
+            character: "Femme Fatale",
+            combination: ["Dark Short", "Democrat Badass", "Paul Rudd"]
+        },
+        {
+            character: "Hardworking Innocent Working Girl",
+            combination: ["Chris Evans", "Cutely Awkward Conversation", "Shoulder Length"]
+        }
+
+    ]
+
+    for(let i=0; i<results.length; i++)
+    {
+        let result = results[i];
+
+        let resultString = JSON.stringify(result.combination);
+      
+        console.log("String conversion complete:");
+        console.log(resultString);
+        console.log(answerListString);
+
+        if(resultString === answerListString)
+        {
+            console.log("Match Found!");
+            character = result.character;
+            break;
+        }
+
+    } //End of For Loop
+  
+    console.log("After comparing Choices against all possible Result outcomes.");
+    console.log(`Character: ${character}`);
+ 
 } //End of Function
 
 
@@ -315,10 +363,12 @@ for(let i=0; i<answerBlocks.length; i++)
         if(clickedBlock.className === "answer-block")
         {
             clickedAns=clickedBlock.id;
+            clickedBlock.classList.add('answered-A');
         }
         else
         {  
             clickedAns = clickedBlock.parentElement.id;
+            clickedBlock.parentElement.classList.add('answered-A');
         }
 
        // console.log(`Clicked Answer: ${clickedAns}`);
@@ -333,8 +383,13 @@ for(let i=0; i<answerBlocks.length; i++)
 
       //  console.log("Choices Made so far:");
       //  console.log(answeredQuestions);
+        
+        let displayFlag = setQuestionAsAnswered(clickedAns);
 
-        setQuestionAsAnswered(clickedAns);
+        //Flag is 1 if all Questions have been answered.
+        if(displayFlag)
+        displayResults(answeredQuestions);
+        
     });
 
 }
