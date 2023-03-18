@@ -3,18 +3,19 @@
 Collect Answer for each Question - When an Answer Block has been clicked - Done
 Scroll to the topmost unanswered question  - Done
 
+Disable other Answers if there is an Answer for Question - Done
+
+Reset Link works - Done
+
 Show Results when all Questions are answered
-    a. Create Result block
+    a. Create Result block - Done
     b. Prepare Result data array - Need to add more choices and images
     c. Program logic- Done
+    d. If all Questions are answered, make Result block visible and scroll to it
 
 
 Image also zooms in - Need to research this
 
-Disable other Answers if there is an Answer for Question - Done
-
-If another Answer is clicked, update selected Answer?
-Or provide Reset button?
 
 */
 
@@ -88,8 +89,8 @@ const quizData = [
         answers: [
             {
                 id: "4.A",
-                text: "Cutely Awkward Conversation",
-                img: "./Images/",
+                text: "Cutely Awkward",
+                img: "./Images/awkward.gif",
                 credit: "Splash"
             },
             {
@@ -101,13 +102,13 @@ const quizData = [
             {
                 id: "4.C",
                 text: "Fend off Sexist Comments",
-                img: "./Images/Sexist.gif",
+                img: "./Images/giphy (2).gif",
                 credit: "Splash"
             },
             {
                 id: "4.D",
                 text: "Democrat Badass",
-                img: "./Images/DemocratBadass.jpg",
+                img: "./Images/giphy (3).gif",
                 credit: "Splash"
             }
         ]
@@ -336,13 +337,66 @@ function displayResults(choices)
   
     console.log("After comparing Choices against all possible Result outcomes.");
     console.log(`Character: ${character}`);
+
+    //Make Result Box visible and populate HTML fields with result values
+
+    let resultBox = document.querySelector('.result-box');
+
+    resultBox.style.Display = "flex";
+
+    resultBox.scrollIntoView();
  
 } //End of Function
 
+//Function that resets the Quiz: all selected answers are removed and Page scrolls to the top
+function resetQuiz()
+{
+    answeredQuestions=[];
+
+    //Clear all Answers with class "answered-A" i.e all answers that have been selected in the quiz
+
+    let answeredAnsList = document.querySelectorAll('.answered-A');
+
+    for(let i=0; i<answeredAnsList.length; i++)
+    {
+        let ansAns = answeredAnsList[i];
+
+        ansAns.classList.remove('answered-A');
+    }
+
+    //Enable all Disabled Answers
+
+    let disabledAnsList = document.querySelectorAll('.disabled');
+
+    for(let i=0; i<disabledAnsList.length; i++)
+    {
+        let disabledAns = disabledAnsList[i];
+
+        disabledAns.classList.remove('disabled');
+    }
+
+    //Clear all Questions with class "answered" i.e all questions whose answers have been selected in the quiz
+
+    let answeredQList = document.querySelectorAll('.answered');
+
+    for(let i=0; i<answeredQList.length; i++)
+    {
+        let answeredQ = answeredQList[i];
+
+        answeredQ.classList.remove('answered');
+    }
+
+    let topOfPage = document.querySelector('.section');
+
+    topOfPage.scrollIntoView();
+
+}
 
 populateQuiz(quizData);
 
 console.log("Quiz Script loaded.");
+
+//If an Answer Block is clicked, then trigger Adding Answer as Choice functionality
 
 const answerBlocks = document.querySelectorAll('.answer-block');
 
@@ -392,4 +446,14 @@ for(let i=0; i<answerBlocks.length; i++)
         
     });
 
-}
+} //End of For Loop
+
+let resetLink = document.querySelector('.result-reset');
+
+resetLink.addEventListener('click', ()=>{
+
+    console.log("Reset Link clicked!");
+
+    resetQuiz();
+
+}) // End of Event Listener

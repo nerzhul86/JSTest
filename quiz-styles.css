@@ -78,7 +78,7 @@ section{
     padding: 20px;
     background-color: #FA5882;
     color: white;
-    display: flex;
+    display: none;
     flex-direction: column;
     
 }
@@ -91,6 +91,18 @@ section{
 
 .result-heading-header{
     font-size: 24px;
+}
+
+.quiz-icon{
+    width: 50px;
+    height: 45px;
+    padding-right: 15px;
+    align-self: center;
+}
+
+.result-heading-title{
+    font-size: 22px;
+    font-weight: bold;
 }
 
 .result-reset{
@@ -111,4 +123,10 @@ section{
 
 .result-inner-heading{
     font-size: 24px;
+    font-weight: bold;
+}
+
+.result-image{
+    width: 620px;
+
 }
